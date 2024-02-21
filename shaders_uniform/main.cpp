@@ -1,6 +1,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <math.h>
 #include <iostream>
 
 /// Resizing flexibility for the render window.
@@ -149,9 +150,14 @@ int main()
 
 		// Update shader uniform.
 		float timeValue = glfwGetTime();
-		float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
-		int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
-		glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+        
+        /// https://www.desmos.com/calculator/rikqjv1cdo
+        float redValue = (sin(2 * timeValue) / 2.0f) + 0.5f;
+		float greenValue = (sin(2 * (timeValue + (2 * M_PI)/3)) / 2.0f) + 0.5f;
+        float blueValue = (sin(2 * (timeValue + (4 * M_PI)/3)) / 2.0f) + 0.5f;
+		
+        int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
+		glUniform4f(vertexColorLocation, redValue, greenValue, blueValue, 1.0f);
 
 		// Drawing.
 		glDrawArrays(GL_TRIANGLES, 0, 3);
